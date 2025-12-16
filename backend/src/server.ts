@@ -44,9 +44,12 @@ if (!MONGO_URI) {
 }
 
 mongoose
-  .connect(MONGO_URI)
+.connect(MONGO_URI)
   .then(() => {
     console.log("✅ MongoDB connected");
+    httpServer.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
     setInterval(async () => {
       try {
         const expired = await releaseExpiredHolds();
@@ -57,9 +60,6 @@ mongoose
         console.error("⏱ Release expired holds failed:", err);
       }
     }, 5000);
-    httpServer.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-    });
   })
   .catch((err) => {
     console.error("❌ MongoDB connection error:", err);
