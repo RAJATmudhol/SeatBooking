@@ -59,7 +59,10 @@ export function SeatProvider({ children }: { children: ReactNode }) {
 
   // Socket connection + listeners
   useEffect(():any => {
-    const s = io("http://localhost:4000");
+    const s = io(import.meta.env.VITE_API_URL, {
+      transports: ["websocket"],
+  });
+
 
     s.on("seats:init", (seatsFromServer: Seat[]) => {
       setSeats(seatsFromServer);
