@@ -1,0 +1,111 @@
+/* Full page layout */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f172a;
+  color: white;
+  padding: 20px;
+}
+
+/* Wrapper */
+.app-wrapper {
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Title */
+.app-title {
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* Controls row */
+.controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.input-box {
+  padding: 8px;
+  width: 80px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  background: #1e293b;
+  color: white;
+  text-align: center;
+}
+
+/* Buttons */
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-generate {
+  background: #6366f1;
+}
+
+.btn-generate:hover {
+  background: #4f46e5;
+}
+
+.btn-send {
+  background: #22c55e;
+  margin-bottom: 20px;
+}
+
+.btn-send:hover {
+  background: #16a34a;
+}
+
+/* Grid container */
+.grid {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  background: #020617;
+  border-radius: 12px;
+  justify-content: center;
+}
+
+/* Seat button */
+.seat-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 12px;
+  transition: 0.2s ease;
+}
+
+.seat-available {
+  background: #1f2937;
+}
+
+.seat-selected {
+  background: #22c55e;
+}
+
+.seat-booked {
+  background: #4b5563;
+  cursor: not-allowed;
+}
+
+/* Placeholder text */
+.placeholder {
+  margin-top: 20px;
+  opacity: 0.7;
+}
