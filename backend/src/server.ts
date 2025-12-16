@@ -18,14 +18,7 @@ const io = new Server(httpServer, {
 });
 
 
-setInterval(async () => {
-  const expired = await releaseExpiredHolds();
-  if (expired.length > 0) {
-    expired.forEach((seat:any) => {
-      io.emit("seat:released", seat);
-    });
-  }
-}, 5000);
+
 // 🔌 Socket.IO
 io.on("connection", (socket) => {
   console.log("🔌 Client connected:", socket.id);
@@ -54,6 +47,16 @@ mongoose
   .connect(MONGO_URI)
   .then(() => {
     console.log("✅ MongoDB connected");
+    setInterval(async () => {
+      try {
+        const expired = await releaseExpiredHolds();
+        expired.forEach((seat: any) => {
+          io.emit("seat:released", seat);
+        });
+      } catch (err) {
+        console.error("⏱ Release expired holds failed:", err);
+      }
+    }, 5000);
     httpServer.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
