@@ -1,30 +1,4 @@
-// import { Router } from "express";
-// import { Server } from "socket.io";
-// import {
-//   holdSeatHandler,
-//   bookHandler
-// } from "../modules/seatController";
-// // import { Seat } from "../model/seat";
 
-// export default function seatRoutes(io: Server) {
-//   const router = Router();
-// // router.post("/generate", generateGridHandler);
-// // router.get("/", async (_, res) => {
-// //   const seats = await Seat.find();
-// //   res.json(seats);
-// // });
-//   router.post("/hold", (req, res) =>
-//     holdSeatHandler(req, res, io)
-//   );
-
-//   router.post("/book", (req, res) =>
-//     bookHandler(req, res, io)
-//   );
-
-//   return router;
-// }
-
-// src/routes/seatRoutes.ts
 import { Router } from "express";
 import { Server } from "socket.io";
 import {
@@ -39,7 +13,7 @@ import { releaseSeatHandler } from "../modules/seatController";
 
 
 export function seatRoutes(io: Server) {
-  
+
   const router = Router();
 
 
@@ -65,13 +39,11 @@ export function seatRoutes(io: Server) {
     }
   });
 
-  // Get all seats (for initial load/recovery)
   router.get("/", async (_req, res) => {
     const seats = await getAllSeats();
     res.json(seats);
   });
 
-  // Hold a seat
   router.post("/hold", async (req, res) => {
     try {
       const { row, col, userId } = req.body;
@@ -91,7 +63,6 @@ export function seatRoutes(io: Server) {
     }
   });
 
-  // Book seats
   router.post("/book", async (req, res) => {
     try {
       const { seatIds, userId } = req.body;
@@ -110,7 +81,7 @@ export function seatRoutes(io: Server) {
     }
   });
 
-  // Get currently held seats by user (for recovery)
+
   router.get("/held/:userId", async (req, res) => {
     try {
       const { userId } = req.params;

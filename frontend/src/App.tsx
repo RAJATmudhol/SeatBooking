@@ -1,4 +1,4 @@
-// src/App.tsx
+
 import { useState } from "react";
 import { SeatProvider, useSeatContext } from "../src/context/Context";
 import "./App.css";
@@ -8,7 +8,6 @@ function SeatApp() {
     seats,
     selected,
     userId,
-    
     cols,
     setGrid,
     toggleSelect,
@@ -35,8 +34,8 @@ function SeatApp() {
     if (seat.status === "BOOKED") return "seat-btn seat-booked";
 
     if (seat.status === "HELD") {
-      if (seat.heldBy === userId) return "seat-btn seat-selected"; // amber
-      return "seat-btn seat-locked"; // grey
+      if (seat.heldBy === userId) return "seat-btn seat-selected"; 
+      return "seat-btn seat-locked"; 
     }
 
     const isSelected = selected.some((s: any) => s._id === seat._id);

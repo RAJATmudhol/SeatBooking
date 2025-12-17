@@ -1,4 +1,4 @@
-// src/services/seatService.ts
+
 import mongoose from "mongoose";
 import { Seat, SeatDoc } from "../model/seat";
 
@@ -28,7 +28,7 @@ export async function getAllSeats() {
 
 export async function holdSeat(row: number, col: number, userId: string) {
   const now = new Date();
-  const expiresAt = new Date(Date.now() + 60_000); // 60s
+  const expiresAt = new Date(Date.now() + 60_000); 
 
   const seat = await Seat.findOneAndUpdate(
     {
@@ -36,8 +36,8 @@ export async function holdSeat(row: number, col: number, userId: string) {
       col,
       $or: [
         { status: "AVAILABLE" },
-        { status: "HELD", heldBy: userId }, // allow refreshing own hold
-        { status: "HELD", holdExpiresAt: { $lt: now } } // expired holds
+        { status: "HELD", heldBy: userId }, 
+        { status: "HELD", holdExpiresAt: { $lt: now } } 
       ]
     },
     {

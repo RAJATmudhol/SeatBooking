@@ -19,28 +19,26 @@ const io = new Server(httpServer, {
 
 
 
-// 🔌 Socket.IO
+
 io.on("connection", (socket) => {
-  console.log("🔌 Client connected:", socket.id);
+  console.log("Client connected:", socket.id);
 
   socket.on("disconnect", () => {
     console.log("❌ Client disconnected:", socket.id);
   });
 });
 
-// 🌍 Routes
 app.get("/", (_req, res) => {
   res.send("✅ Seat booking server running");
 });
 
 app.use("/api/seats", seatRoutes(io)); 
 
-// 🗄 MongoDB
 const PORT = Number(process.env.PORT) || 4000;
 const MONGO_URI = process.env.MONGO_URI;
 
 if (!MONGO_URI) {
-  throw new Error("❌ MONGO_URI missing in .env");
+  throw new Error(" MONGO_URI missing in .env");
 }
 
 mongoose
@@ -48,7 +46,7 @@ mongoose
   .then(() => {
     console.log("✅ MongoDB connected");
     httpServer.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(` Server running on port ${PORT}`);
     });
     setInterval(async () => {
       try {
@@ -57,11 +55,11 @@ mongoose
           io.emit("seat:released", seat);
         });
       } catch (err) {
-        console.error("⏱ Release expired holds failed:", err);
+        console.error("Release expired holds failed:", err);
       }
     }, 5000);
   })
   .catch((err) => {
-    console.error("❌ MongoDB connection error:", err);
+    console.error("MongoDB connection error:", err);
     process.exit(1);
   });

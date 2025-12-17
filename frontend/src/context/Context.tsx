@@ -1,20 +1,7 @@
-// src/context/SeatContext.tsx
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode
-} from "react";
+
+import {createContext,useContext, useEffect, useState,type ReactNode} from "react";
 import { io, } from "socket.io-client";
-import {
-  getSeatsApi,
-  getHeldSeatsApi,
-  holdSeatApi,
-  bookSeatsApi,
-  generateGridApi,
-  releaseSeatApi
-} from "../api/Seatapi";
+import { getSeatsApi, getHeldSeatsApi, holdSeatApi,bookSeatsApi, generateGridApi, releaseSeatApi} from "../api/Seatapi";
 
 export type SeatStatus = "AVAILABLE" | "HELD" | "BOOKED";
 
@@ -42,22 +29,19 @@ interface SeatContextType {
 const SeatContext = createContext<SeatContextType | null>(null);
 
 export function SeatProvider({ children }: { children: ReactNode }) {
+
   const [seats, setSeats] = useState<Seat[]>([]);
   const [selected, setSelected] = useState<Seat[]>([]);
   const [rows, setRows] = useState(0);
   const [cols, setCols] = useState(0);
-  // const [socket, setSocket] = useState<Socket | null>(null);
-
+  
   const [userId] = useState(
     () => localStorage.getItem("userId") ?? crypto.randomUUID()
   );
 
-  // Persist userId
-  useEffect(() => {
-    localStorage.setItem("userId", userId);
-  }, [userId]);
+  useEffect(() => {localStorage.setItem("userId", userId); }, [userId]);
 
-  // Socket connection + listeners
+
   useEffect(():any => {
     const s = io(import.meta.env.VITE_API_URL, {
       transports: ["websocket"],
@@ -93,7 +77,6 @@ export function SeatProvider({ children }: { children: ReactNode }) {
     return () => s.disconnect();
   }, []);
 
-  // Initial load + recovery
   useEffect(() => {
     (async () => {
       const allSeats = await getSeatsApi();
@@ -126,15 +109,13 @@ export function SeatProvider({ children }: { children: ReactNode }) {
   }
 
 async function toggleSelect(seat: Seat) {
-  // ❌ booked seat
   if (seat.status === "BOOKED") return;
 
-  // ❌ held by someone else
   if (seat.status === "HELD" && seat.heldBy !== userId) return;
 
   const alreadySelected = selected.some(s => s._id === seat._id);
 
-  // 🔓 UN-HOLD (release)
+ 
   if (alreadySelected && seat.heldBy === userId) {
     const released = await releaseSeatApi(seat.row, seat.col, userId);
 
@@ -146,7 +127,6 @@ async function toggleSelect(seat: Seat) {
     return;
   }
 
-  // 🔒 HOLD
   const held = await holdSeatApi(seat.row, seat.col, userId);
 
   setSeats(prev =>
@@ -192,7 +172,6 @@ async function bookSelected() {
   try {
     await bookSeatsApi(seatIds, userId);
 
-    // OPTIMISTIC UI UPDATE
     setSeats(prev =>
       prev.map(seat =>
         seatIds.includes(seat._id)
